@@ -1,4 +1,4 @@
-use charts::{Chart, ScaleLinear, MarkerType, LineSeriesView};
+use charts::{Chart, ScaleLinear, MarkerType, LineSeriesView, Color};
 
 type Point = Vec<f64>;
 
@@ -43,6 +43,7 @@ fn show_spline_vs_fn(width: isize, height: isize, spline: &Vec<(f32, f32)>, cont
 		.set_y_scale(&y)
 		.set_marker_type(MarkerType::Circle)
 		.set_label_visibility(false)
+		.set_colors(Color::from_vec_of_hex_strings(vec!["#69dead"]))
 		.load_data(spline).unwrap();
 
 	// Create control points
@@ -51,6 +52,7 @@ fn show_spline_vs_fn(width: isize, height: isize, spline: &Vec<(f32, f32)>, cont
 		.set_y_scale(&y)
 		.set_marker_type(MarkerType::X)
 		.set_label_visibility(false)
+		.set_colors(Color::from_vec_of_hex_strings(vec!["#dead69"]))
 		.load_data(control_point_data).unwrap();
 
 	// Create function points
@@ -59,6 +61,7 @@ fn show_spline_vs_fn(width: isize, height: isize, spline: &Vec<(f32, f32)>, cont
 		.set_y_scale(&y)
 		.set_marker_type(MarkerType::Square)
 		.set_label_visibility(false)
+		.set_colors(Color::from_vec_of_hex_strings(vec!["#ad69de"]))
 		.load_data(func).unwrap();
 
 	// Generate and save the chart.
