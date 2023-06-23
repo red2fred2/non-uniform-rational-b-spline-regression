@@ -1,4 +1,5 @@
-pub mod fitness;
+mod fitness;
+mod gradient_descent;
 
 type Point = Vec<f64>;
 
@@ -8,14 +9,20 @@ where F: Fn(f64) -> f64 {
 	let start_point = vec![domain_min, func(domain_min)];
 	let end_point = vec![domain_max, func(domain_max)];
 
+	let data = gradient_descent::gradient_descent(start_point.clone(), end_point.clone(), func, 1);
+	build_control_points(data, start_point, end_point)
+}
 
-	let samples = 15;
-	let error = fitness::fitness(&vec![start_point.clone(), end_point.clone()], func, samples);
+pub fn build_control_points(data: Vec<f64>, start_point: Point, end_point: Point) -> Vec<Point> {
+	let mut control_points = Vec::new();
+	control_points.push(start_point);
 
-	println!("Error: {error}");
+	for i in (0..data.len()).step_by(2) {
+		let point = vec![data[i], data[i+1]];
+		control_points.push(point);
+	}
 
-	vec![
-		start_point,
-		end_point
-	]
+	control_points.push(end_point);
+
+	control_points
 }
