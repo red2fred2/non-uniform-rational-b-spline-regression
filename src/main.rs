@@ -10,7 +10,7 @@ fn main() -> Result<(), String> {
 	let control_points = ml::regress_spline(fun, domain_min, domain_max);
 
 	// Generate graphs
-	let num_points = 150;
+	let num_points = 1000;
 
 	let points = math::calculate_fn_points(num_points, fun, domain_min, domain_max);
 	let func = graph::points_to_graph_data(&points);
