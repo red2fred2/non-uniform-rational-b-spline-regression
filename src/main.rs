@@ -3,8 +3,6 @@ use charts::{Chart, ScaleLinear, MarkerType, LineSeriesView};
 type Point = Vec<f64>;
 
 fn main() -> Result<(), String> {
-	let u_min = 0.0;
-	let u_max = 1.0;
 	let num_points = 50;
 
 	let control_points = vec![
@@ -14,13 +12,20 @@ fn main() -> Result<(), String> {
 		vec![200.0, 100.0],
 	];
 
-	let points = calculate_bezier_points(&control_points, u_min, u_max, num_points);
-	let data = points_to_graph_data(&points);
+	let domain_min = 0.0;
+	let domain_max = 200.0;
+
+	let points = calculate_fn_points(num_points, sin, domain_min, domain_max);
+	let func = points_to_graph_data(&points);
+
+	let points = calculate_bezier_points(&control_points, num_points);
+	let spline = points_to_graph_data(&points);
+
 	let control_point_data = points_to_graph_data(&control_points);
-	show_spline(2500, 1300, data, control_point_data)
+	show_spline_vs_fn(2500, 1300, &spline, &control_point_data, &func)
 }
 
-fn show_spline(width: isize, height: isize, data: Vec<(f32, f32)>, control_point_data: Vec<(f32, f32)>) -> Result<(), String> {
+fn show_spline_vs_fn(width: isize, height: isize, spline: &Vec<(f32, f32)>, control_point_data: &Vec<(f32, f32)>, func: &Vec<(f32, f32)>) -> Result<(), String> {
 	let (top, right, bottom, left) = (90, 40, 50, 60);
 
 	// Set up axes
@@ -38,15 +43,23 @@ fn show_spline(width: isize, height: isize, data: Vec<(f32, f32)>, control_point
 		.set_y_scale(&y)
 		.set_marker_type(MarkerType::Circle)
 		.set_label_visibility(false)
-		.load_data(&data).unwrap();
+		.load_data(spline).unwrap();
 
 	// Create control points
 	let control_view = LineSeriesView::new()
 		.set_x_scale(&x)
 		.set_y_scale(&y)
+		.set_marker_type(MarkerType::X)
+		.set_label_visibility(false)
+		.load_data(control_point_data).unwrap();
+
+	// Create function points
+	let func_view = LineSeriesView::new()
+		.set_x_scale(&x)
+		.set_y_scale(&y)
 		.set_marker_type(MarkerType::Square)
 		.set_label_visibility(false)
-		.load_data(&control_point_data).unwrap();
+		.load_data(func).unwrap();
 
 	// Generate and save the chart.
 	Chart::new()
@@ -55,6 +68,7 @@ fn show_spline(width: isize, height: isize, data: Vec<(f32, f32)>, control_point
 		.set_margins(top, right, bottom, left)
 		.add_view(&spline_view)
 		.add_view(&control_view)
+		.add_view(&func_view)
 		.add_axis_bottom(&x)
 		.add_axis_left(&y)
 		.save("chart.svg")
@@ -107,14 +121,13 @@ fn calculate_bezier_curve(control_points: &Vec<Point>, u: f64) -> Point {
 	vec![x, y]
 }
 
-fn calculate_bezier_points(control_points: &Vec<Point>, u_min: f64, u_max: f64, num_points: u32) -> Vec<Point> {
-
-	let delta = (u_max - u_min) / num_points as f64;
+fn calculate_bezier_points(control_points: &Vec<Point>, num_points: u32) -> Vec<Point> {
+	let delta = 1.0 / num_points as f64;
 	let mut points = Vec::new();
 
 	// Calculate each point
 	for i in 0..=num_points {
-		let u = i as f64 * delta + u_min;
+		let u = i as f64 * delta;
 		let point = calculate_bezier_curve(control_points, u);
 		points.push(point);
 	}
@@ -131,4 +144,24 @@ fn points_to_graph_data(points: &Vec<Point>) -> Vec<(f32, f32)> {
 	}
 
 	data
+}
+
+fn calculate_fn_points<F>(num_points: u32, func: F, domain_min: f64, domain_max: f64)
+-> Vec<Point>
+where F: Fn(f64) -> f64 {
+	let delta = (domain_max - domain_min) / num_points as f64;
+	let mut points = Vec::new();
+
+	// Calculate each point
+	for i in 0..=num_points {
+		let x = i as f64 * delta + domain_min;
+		let point = func(x);
+		points.push(vec![x, point]);
+	}
+
+	points
+}
+
+fn sin(x: f64) -> f64 {
+	50.0 * (x/25.0).sin() + 50.0
 }
