@@ -1,5 +1,7 @@
 use charts::{Chart, ScaleLinear, MarkerType, LineSeriesView, Color};
 
+type Point = Vec<f64>;
+
 pub fn show_spline_vs_fn(spline: &Vec<(f32, f32)>, control_point_data: &Vec<(f32, f32)>, func: &Vec<(f32, f32)>) -> Result<(), String> {
 	let width = 2500;
 	let height = 1300;
@@ -53,4 +55,15 @@ pub fn show_spline_vs_fn(spline: &Vec<(f32, f32)>, control_point_data: &Vec<(f32
 		.add_axis_bottom(&x)
 		.add_axis_left(&y)
 		.save("chart.svg")
+}
+
+pub fn points_to_graph_data(points: &Vec<Point>) -> Vec<(f32, f32)> {
+	let mut data = Vec::new();
+
+	for point in points {
+		let datum = (point[0] as f32, point[1] as f32);
+		data.push(datum);
+	}
+
+	data
 }

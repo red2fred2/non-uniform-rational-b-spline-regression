@@ -16,12 +16,12 @@ fn main() -> Result<(), String> {
 	let domain_max = 200.0;
 
 	let points = calculate_fn_points(num_points, sin, domain_min, domain_max);
-	let func = points_to_graph_data(&points);
+	let func = graph::points_to_graph_data(&points);
 
 	let points = calculate_bezier_points(&control_points, num_points);
-	let spline = points_to_graph_data(&points);
+	let spline = graph::points_to_graph_data(&points);
 
-	let control_point_data = points_to_graph_data(&control_points);
+	let control_point_data = graph::points_to_graph_data(&control_points);
 	graph::show_spline_vs_fn(&spline, &control_point_data, &func)
 }
 
@@ -84,17 +84,6 @@ fn calculate_bezier_points(control_points: &Vec<Point>, num_points: u32) -> Vec<
 	}
 
 	points
-}
-
-fn points_to_graph_data(points: &Vec<Point>) -> Vec<(f32, f32)> {
-	let mut data = Vec::new();
-
-	for point in points {
-		let datum = (point[0] as f32, point[1] as f32);
-		data.push(datum);
-	}
-
-	data
 }
 
 fn calculate_fn_points<F>(num_points: u32, func: F, domain_min: f64, domain_max: f64)
