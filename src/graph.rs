@@ -39,7 +39,7 @@ pub fn show_spline_vs_fn(spline: &Vec<(f32, f32)>, control_point_data: &Vec<(f32
 	let func_view = LineSeriesView::new()
 		.set_x_scale(&x)
 		.set_y_scale(&y)
-		.set_marker_type(MarkerType::Square)
+		.set_marker_type(MarkerType::Circle)
 		.set_label_visibility(false)
 		.set_colors(Color::from_vec_of_hex_strings(vec!["#ad69de"]))
 		.load_data(func).unwrap();
