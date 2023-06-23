@@ -76,3 +76,7 @@ where F: Fn(f64) -> f64 {
 
 	points
 }
+
+pub fn linear_interpolate(x_0: f64, y_0: f64, x_1: f64, y_1: f64, x: f64) -> f64 {
+	((y_1-y_0)/(x_1-x_0)*(x-x_0)) + y_0
+}

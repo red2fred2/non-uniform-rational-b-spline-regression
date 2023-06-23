@@ -7,7 +7,7 @@ fn main() -> Result<(), String> {
 	let domain_min = 0.0;
 	let domain_max = 200.0;
 
-	let control_points = ml::regress_spline(fun, domain_min, domain_max);
+	let control_points = ml::regress_spline(&fun, domain_min, domain_max);
 
 	// Generate graphs
 	let num_points = 1000;
@@ -25,5 +25,6 @@ fn main() -> Result<(), String> {
 }
 
 fn fun(x: f64) -> f64 {
-	50.0 * (x/25.0).sin() + 50.0
+	// 50.0 * (x/25.0).sin() + 50.0
+	10.0 * (x+1.0).ln()
 }
