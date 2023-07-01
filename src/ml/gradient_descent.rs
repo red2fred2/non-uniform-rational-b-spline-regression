@@ -1,9 +1,10 @@
 type Point = Vec<f64>;
 
+#[allow(unused)]
 pub fn gradient_descent<F>(start_point: &Point, end_point: &Point, test_fn: &F, num_controls: u8)
 -> Vec<f64>
 where F: Fn(f64) -> f64 {
-	let mut data = super::init_data(start_point, end_point, num_controls);
+	let mut data = super::initialization::init_data(start_point, end_point, num_controls);
 
 	let samples = 100;
 
