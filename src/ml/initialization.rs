@@ -1,3 +1,5 @@
+use crate::math::linear_interpolate;
+
 type Point = Vec<f64>;
 
 /// Initialize control points for a spline
@@ -30,7 +32,7 @@ pub fn init_data(start_point: &Point, end_point: &Point, num_controls: u8) -> Ve
 		let x = x_0 + i as f64 * delta;
 		data.push(x);
 
-		let y = crate::math::linear_interpolate(x_0, y_0, x_1, y_1, x);
+		let y = linear_interpolate(x_0, y_0, x_1, y_1, x);
 		data.push(y)
 	}
 

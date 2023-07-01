@@ -1,5 +1,5 @@
 /// Returns the neighbors of the current settings
-fn neighbors(data: &Vec<f64>) -> Vec<Vec<f64>> {
+pub fn neighbors(data: &Vec<f64>) -> Vec<Vec<f64>> {
 	let delta = 1.0;
 	let mut neighbors = Vec::new();
 	neighbors.push(data.clone());
