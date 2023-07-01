@@ -2,6 +2,7 @@ use charts::{Chart, ScaleLinear, MarkerType, LineSeriesView, Color};
 
 type Point = Vec<f64>;
 
+/// Renders the graph
 pub fn show_spline_vs_fn(spline: &Vec<(f32, f32)>, control_point_data: &Vec<(f32, f32)>, func: &Vec<(f32, f32)>) -> Result<(), String> {
 	let width = 2500;
 	let height = 1300;
@@ -57,6 +58,7 @@ pub fn show_spline_vs_fn(spline: &Vec<(f32, f32)>, control_point_data: &Vec<(f32
 		.save("chart.svg")
 }
 
+/// Translates 2D vectors to data that the graph can understand
 pub fn points_to_graph_data(points: &Vec<Point>) -> Vec<(f32, f32)> {
 	let mut data = Vec::new();
 

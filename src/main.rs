@@ -24,6 +24,9 @@ fn main() -> Result<(), String> {
 	Ok(())
 }
 
+/// Function being approximated
+/// This doesn't need to be a closed function, later it should be implemented as
+/// a lookup table, emulating real world limited data points.
 fn fun(x: f64) -> f64 {
 	50.0 * (x/25.0).sin() + 50.0
 	// 10.0 * (x+1.0).ln()

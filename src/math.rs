@@ -25,7 +25,7 @@ pub fn bernstein_polynomials(control_point: u32, num_control_points: u32, u: f64
 	n_fac * u_i * inverse / (i_fac * n_min_i_fac)
 }
 
-// Calculates the Bezier curve at this u value
+/// Calculates the Bezier curve at this u value
 pub fn calculate_bezier_curve(control_points: &Vec<Point>, u: f64) -> Point {
 	let num_points = control_points.len() - 1;
 	let mut weights = Vec::new();
@@ -47,6 +47,8 @@ pub fn calculate_bezier_curve(control_points: &Vec<Point>, u: f64) -> Point {
 	vec![x, y]
 }
 
+/// Calculates a bunch of points of the bezier function
+/// Should probably be replaced with a more general version for any function.
 pub fn calculate_bezier_points(control_points: &Vec<Point>, num_points: u32) -> Vec<Point> {
 	let delta = 1.0 / num_points as f64;
 	let mut points = Vec::new();
@@ -61,6 +63,9 @@ pub fn calculate_bezier_points(control_points: &Vec<Point>, num_points: u32) -> 
 	points
 }
 
+/// Calculates a bunch of points of a test function
+/// Can probably be combined with calculate_bezier_points, but I want to do
+/// interesting things instead.
 pub fn calculate_fn_points<F>(num_points: u32, func: F, domain_min: f64, domain_max: f64)
 -> Vec<Point>
 where F: Fn(f64) -> f64 {
@@ -77,6 +82,7 @@ where F: Fn(f64) -> f64 {
 	points
 }
 
+/// Does a linear interpolation between two points
 pub fn linear_interpolate(x_0: f64, y_0: f64, x_1: f64, y_1: f64, x: f64) -> f64 {
 	((y_1-y_0)/(x_1-x_0)*(x-x_0)) + y_0
 }

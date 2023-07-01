@@ -1,8 +1,10 @@
 mod fitness;
 mod gradient_descent;
+mod simulated_annealing;
 
 type Point = Vec<f64>;
 
+/// Tries to match a spline to a function over a set domain
 pub fn regress_spline<F>(func: &F, domain_min: f64, domain_max: f64) -> Vec<Point>
 where F: Fn(f64) -> f64 {
 	// Set start and end points
@@ -13,6 +15,7 @@ where F: Fn(f64) -> f64 {
 	build_control_points(&data, &start_point, &end_point)
 }
 
+/// Initialize control points for a spline
 pub fn build_control_points(data: &Vec<f64>, start_point: &Point, end_point: &Point) -> Vec<Point> {
 	let mut control_points = Vec::new();
 	control_points.push(start_point.clone());
@@ -27,6 +30,8 @@ pub fn build_control_points(data: &Vec<f64>, start_point: &Point, end_point: &Po
 	control_points
 }
 
+/// Initialize data to sit on a line between the first and last points
+/// This may or may not be worth doing. More testing is needed.
 fn init_data(start_point: &Point, end_point: &Point, num_controls: u8) -> Vec<f64> {
 	let x_0 = start_point[0];
 	let y_0 = start_point[1];

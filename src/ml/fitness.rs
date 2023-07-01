@@ -1,5 +1,7 @@
 type Point = Vec<f64>;
 
+/// Core fitness function
+/// Measures how much the current attempt sucks
 pub fn fitness<F>(data: &Vec<f64>, start_point: &Point, end_point: &Point, test_fn: &F, samples: u32) -> f32
 where F: Fn(f64) -> f64 {
 	let delta = 1.0 / samples as f64;
