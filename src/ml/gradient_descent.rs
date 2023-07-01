@@ -4,11 +4,6 @@ pub fn gradient_descent<F>(start_point: &Point, end_point: &Point, test_fn: &F, 
 -> Vec<f64>
 where F: Fn(f64) -> f64 {
 	let mut data = init_data(start_point, end_point, num_controls);
-	// let mut data = vec![100.0, 40.0];
-	// let mut data = Vec::new();
-	// for _ in 0..num_controls * 2 {
-	// 	data.push(0.0)
-	// }
 
 	let samples = 100;
 
