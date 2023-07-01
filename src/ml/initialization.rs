@@ -28,7 +28,7 @@ pub fn init_data(start_point: &Point, end_point: &Point, num_controls: u8) -> Ve
 	let delta = (x_1 - x_0) / (num_controls + 1) as f64;
 	let mut data = Vec::new();
 
-	for i in 1..num_controls {
+	for i in 1..=num_controls {
 		let x = x_0 + i as f64 * delta;
 		data.push(x);
 
