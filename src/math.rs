@@ -86,3 +86,28 @@ where F: Fn(f64) -> f64 {
 pub fn linear_interpolate(x_0: f64, y_0: f64, x_1: f64, y_1: f64, x: f64) -> f64 {
 	((y_1-y_0)/(x_1-x_0)*(x-x_0)) + y_0
 }
+
+/// Picks an index from a list of weights
+/// Probably a super awful algorithm, but I'll use a better one if I need to
+pub fn pick_from_weight_list(weights: &Vec<f32>) -> usize {
+	let total_weight: f32 = weights.iter().sum();
+
+	let rand: f32 = rand::random();
+	let choice = rand * total_weight;
+
+	let mut weight_so_far = 0.0;
+
+	for (i, weight) in weights.iter().enumerate() {
+		let lower_bound = weight_so_far;
+		let upper_bound = lower_bound + weight;
+
+		if choice <= upper_bound && choice > lower_bound {
+			return i
+		}
+
+		weight_so_far = upper_bound;
+	}
+
+	// It should never be able to make it here
+	panic!()
+}
