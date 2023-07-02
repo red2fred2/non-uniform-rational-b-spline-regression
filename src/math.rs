@@ -101,7 +101,7 @@ pub fn pick_from_weight_list(weights: &Vec<f32>) -> usize {
 		let lower_bound = weight_so_far;
 		let upper_bound = lower_bound + weight;
 
-		if choice <= upper_bound && choice > lower_bound {
+		if choice <= upper_bound && choice > lower_bound { // Floating point errors I don't care about yet
 			return i
 		}
 
