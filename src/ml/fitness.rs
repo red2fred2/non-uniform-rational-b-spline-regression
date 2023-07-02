@@ -24,6 +24,11 @@ where F: Fn(f64) -> f64 {
 
 		// Calculate error
 		mean_squared_error += ((y_fn - y_curve) * (y_fn - y_curve)) as f32;
+
+		// Add penalty for being outside domain
+		if x < start_point[0] || x > end_point[0] {
+			mean_squared_error += 1000.0;
+		}
 	}
 
 	mean_squared_error.sqrt()
