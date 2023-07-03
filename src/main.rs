@@ -1,6 +1,7 @@
 mod graph;
 mod ml;
 mod math;
+mod spline;
 
 fn main() -> Result<(), String> {
 	// Regress to best spline
