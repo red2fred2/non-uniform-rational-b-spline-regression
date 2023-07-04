@@ -1,4 +1,40 @@
 use float_cmp::approx_eq;
+use super::control_point::ControlPoint;
+
+/// Represents a non-uniform rational B-Spline
+pub struct BSpline {
+	control_points: Vec<ControlPoint>,
+	knots: Vec<f32>,
+}
+
+impl BSpline {
+	/// Create a new spline
+	#[allow(unused)]
+	pub fn new(control_points: Vec<ControlPoint>, knots: Vec<f32>) -> Self {
+		BSpline {control_points, knots}
+	}
+
+	/// Finds which knot span a certain u value is in
+	#[allow(unused)]
+	pub fn find_span(&self, u: f32) -> usize {
+		let degree = self.control_points.len();
+		let knots = &self.knots;
+
+		find_span(degree, knots, u)
+	}
+
+	/// Find the values of each basis function at u
+	#[allow(unused)]
+	fn basis_functions(&self, u: f32) -> Vec<f32> {
+		let degree = self.control_points.len();
+		let knots = &self.knots;
+
+		let span = find_span(degree, knots, u);
+
+		basis_functions(degree, knots, span, u)
+	}
+
+}
 
 /// Finds which knot span a certain u value is in
 ///
@@ -7,7 +43,7 @@ use float_cmp::approx_eq;
 /// * `degree`	- The polynomial degree of the basis functions
 /// * `knots`	- A vector containing the u value of each knot
 /// * 'u'		- The u value
-fn find_span(degree: u8, knots: Vec<f32>, u: f32) -> usize {
+fn find_span(degree: usize, knots: &Vec<f32>, u: f32) -> usize {
 	let n = knots.len();
 
 	// Cover the edge case at the end
@@ -16,7 +52,7 @@ fn find_span(degree: u8, knots: Vec<f32>, u: f32) -> usize {
 	}
 
 	// Binary search to find it
-	let mut low = degree as usize;
+	let mut low = degree;
 	let mut high = n + 1;
 	let mut mid = (low + high) / 2;
 
@@ -42,7 +78,7 @@ fn find_span(degree: u8, knots: Vec<f32>, u: f32) -> usize {
 /// * `knots`	- A vector containing the u value of each knot
 /// * `span`	- Which span the u value is in
 /// * 'u'		- The u value
-fn basis_functions(degree: u8, knots: Vec<f32>, span: usize, u: f32) -> Vec<f32> {
+fn basis_functions(degree: usize, knots: &Vec<f32>, span: usize, u: f32) -> Vec<f32> {
 	let mut outputs = Vec::new();
 	outputs.push(1.0);
 	let mut left = Vec::new();
@@ -50,7 +86,7 @@ fn basis_functions(degree: u8, knots: Vec<f32>, span: usize, u: f32) -> Vec<f32>
 	let mut right = Vec::new();
 	right.push(0.0);
 
-	for i in 1..=degree as usize {
+	for i in 1..=degree {
 		let left_side = u - knots[span + 1 - i];
 		left.push(left_side);
 
