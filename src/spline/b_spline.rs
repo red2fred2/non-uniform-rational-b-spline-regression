@@ -11,7 +11,6 @@ pub struct BSpline {
 
 impl BSpline {
 	/// Create a new spline
-	#[allow(unused)]
 	pub fn new(control_points: Vec<ControlPoint>, knots: Vec<f32>) -> Result<Self> {
 		check_dimensions(&control_points)?;
 
@@ -29,7 +28,6 @@ impl BSpline {
 	}
 
 	/// Calculates the point at a certain u value
-	#[allow(unused)]
 	pub fn calulate_point(&self, u: f32) -> Result<Vec<f32>> {
 		let basis_values = self.basis_functions(u);
 
