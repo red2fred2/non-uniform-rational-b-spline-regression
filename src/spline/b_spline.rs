@@ -9,14 +9,12 @@ pub struct BSpline {
 
 impl BSpline {
 	/// Create a new spline
-	#[allow(unused)]
 	pub fn new(control_points: Vec<ControlPoint>, knots: Vec<f32>) -> Self {
 		BSpline {control_points, knots}
 	}
 
 	/// Finds which knot span a certain u value is in
-	#[allow(unused)]
-	pub fn find_span(&self, u: f32) -> usize {
+	fn find_span(&self, u: f32) -> usize {
 		let degree = self.control_points.len();
 		let knots = &self.knots;
 
@@ -24,7 +22,6 @@ impl BSpline {
 	}
 
 	/// Find the values of each basis function at u
-	#[allow(unused)]
 	fn basis_functions(&self, u: f32) -> Vec<f32> {
 		let degree = self.control_points.len();
 		let knots = &self.knots;
@@ -33,6 +30,7 @@ impl BSpline {
 
 		basis_functions(degree, knots, span, u)
 	}
+
 
 }
 
