@@ -13,14 +13,6 @@ impl BSpline {
 		BSpline {control_points, knots}
 	}
 
-	/// Finds which knot span a certain u value is in
-	fn find_span(&self, u: f32) -> usize {
-		let degree = self.control_points.len();
-		let knots = &self.knots;
-
-		find_span(degree, knots, u)
-	}
-
 	/// Find the values of each basis function at u
 	fn basis_functions(&self, u: f32) -> Vec<f32> {
 		let degree = self.control_points.len();
@@ -30,8 +22,6 @@ impl BSpline {
 
 		basis_functions(degree, knots, span, u)
 	}
-
-
 }
 
 /// Finds which knot span a certain u value is in
