@@ -29,12 +29,22 @@ impl BSpline {
 
 	/// Calculates the point at a certain u value
 	pub fn calulate_point(&self, u: f32) -> Result<Vec<f32>> {
+		let dimensions = self.num_dimensions()?;
 		let basis_values = self.basis_functions(u);
 
-		let point = Vec::new();
+		// Set up point
+		let mut point = vec![0.0; dimensions];
 
+		// Apply basis functions
 		for i in 0..basis_values.len() {
-			let control = self.control_points.get(i);
+			let control = self.control_points.get(i)
+				.ok_or(anyhow!("Attempting to calculate point without enough control points for its degree"))?;
+
+			let weight = control.weight * basis_values[i];
+
+			for j in 0..dimensions {
+				point[j] += weight * control.position[j];
+			}
 		}
 
 		Ok(point)
@@ -92,15 +102,15 @@ fn basis_functions(degree: usize, knots: &Vec<f32>, span: usize, u: f32) -> Vec<
 
 /// Checks to make sure that every control point has the same number of dimensions
 fn check_dimensions(control_points: &Vec<ControlPoint>) -> Result<()> {
-	let dimension;
+	let dimensions;
 
 	match control_points.get(0) {
-		Some(point) => dimension = point.position.len(),
+		Some(point) => dimensions = point.position.len(),
 		None => return Err(anyhow!("B-spline has no control points"))
 	}
 
 	for point in control_points {
-		if point.position.len() != dimension {
+		if point.position.len() != dimensions {
 			return Err(anyhow!("B-spline control points are not all the same dimension"))
 		}
 	}
